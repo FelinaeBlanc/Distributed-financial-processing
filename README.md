@@ -5,7 +5,7 @@
 ### 📌 Présentation
 Ce projet a été réalisé par une équipe de **6 étudiants**, répartis en **3 groupes de 2** :
 - **Développement logiciel et infrastructure**
-- **Cluster Kubernetes et gestion du déploiement**
+- **Gestion et mise en place d'un Cluster Kubernetes**
 - **Site Reliability Engineering (SRE)**
 
 🚀 **Ce dépôt concerne la partie développement logiciel**, qui inclut la conception de l’architecture logicielle, l’implémentation des microservices et leur intégration avec Kafka et PostgreSQL.  
