@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traiteur
+  labels:
+    app: traiteur
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traiteur
+  template:
+    metadata:
+      labels:
+        app: traiteur
+    spec:
+      containers:
+      - name: traiteur
+        #image: traiteur-image:latest
+        #imagePullPolicy: Never
+        image: galiootp/projet_stddev_ensimag_actions:traiteur
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka:9092"
+        - name: POSTGRES_HOST
+          value: "postgres"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_DB
+          value: "stock_data"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "postgres_password"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-scaledobject-traiteur
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: traiteur  # Nom du déploiement pour le topic stock_topic
+  minReplicaCount: 1
+  maxReplicaCount: 30
+  triggers:
+  - type: kafka
+    metadata:
+      bootstrapServers: kafka:9092  # Adresse du serveur Kafka
+      topic: stock_data_topic       # Topic Kafka à surveiller
+      consumerGroup: traiteur-consumer-group  # Groupe de consommateurs pour le traiteur
+      lagThreshold: "100"           # Seuil de lag pour mise à l'échelle

@@ -1,0 +1,26 @@
+
+kubectl apply -f kubernetes/kafka-service.yaml
+kubectl apply -f kubernetes/kafka-deployment.yaml
+
+kubectl apply -f kubernetes/postgres-service.yaml
+kubectl apply -f kubernetes/postgres-deployment.yaml
+
+kubectl apply -f kubernetes/manager-deployment.yaml
+kubectl apply -f kubernetes/agent-deployment.yaml
+kubectl apply -f kubernetes/traiteur-deployment.yaml
+
+
+kubectl delete -f kubernetes/kafka-configmap.yaml
+kubectl delete -f kubernetes/kafka-service.yaml
+kubectl delete -f kubernetes/kafka-deployment.yaml
+
+kubectl delete -f kubernetes/postgres-service.yaml
+kubectl delete -f kubernetes/postgres-deployment.yaml
+
+kubectl delete -f kubernetes/manager-deployment.yaml
+kubectl delete -f kubernetes/agent-deployment.yaml
+kubectl delete -f kubernetes/traiteur-deployment.yaml
+
+
+kubectl get pods
+kubectl get services

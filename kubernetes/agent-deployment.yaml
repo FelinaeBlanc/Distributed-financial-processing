@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent
+  labels:
+    app: agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent
+  template:
+    metadata:
+      labels:
+        app: agent
+    spec:
+      containers:
+      - name: agent
+        #image: agent-image:latest
+        #imagePullPolicy: Never
+        image: galiootp/projet_stddev_ensimag_actions:agent
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka:9092"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-scaledobject-agent
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: agent  # Nom du déploiement pour le topic stock_data_topic
+    
+  minReplicaCount: 1
+  maxReplicaCount: 30
+  triggers:
+  - type: kafka
+    metadata:
+      bootstrapServers: kafka:9092  # Adresse du serveur Kafka
+      topic: stock_topic            # Topic Kafka à surveiller
+      consumerGroup: agent-consumer-group  # Groupe de consommateurs pour l'agent
+      lagThreshold: "150"           # Seuil de lag pour mise à l'échelle

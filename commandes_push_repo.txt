@@ -1,0 +1,9 @@
+docker build -t galiootp/projet_stddev_ensimag_actions:manager -f services/manager/Dockerfile .
+docker build -t galiootp/projet_stddev_ensimag_actions:agent -f services/agent/Dockerfile .
+docker build -t galiootp/projet_stddev_ensimag_actions:traiteur -f services/traiteur/Dockerfile .
+
+docker login
+
+docker push galiootp/projet_stddev_ensimag_actions:manager
+docker push galiootp/projet_stddev_ensimag_actions:agent
+docker push galiootp/projet_stddev_ensimag_actions:traiteur

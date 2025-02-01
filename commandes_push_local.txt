@@ -1,0 +1,11 @@
+sudo docker build -t manager-image -f services/manager/Dockerfile .
+sudo docker build -t agent-image -f services/agent/Dockerfile .
+sudo docker build -t traiteur-image -f services/traiteur/Dockerfile .
+
+sudo docker save manager-image -o manager-image.tar
+sudo docker save agent-image -o agent-image.tar
+sudo docker save traiteur-image -o traiteur-image.tar
+
+sudo microk8s ctr image import manager-image.tar
+sudo microk8s ctr image import agent-image.tar
+sudo microk8s ctr image import traiteur-image.tar
