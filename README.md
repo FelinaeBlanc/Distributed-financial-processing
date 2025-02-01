@@ -34,11 +34,16 @@ Mettre en œuvre un **système distribué** capable d’analyser et de traiter e
 
 ## 🏗️ Présentation de l’Architecture
 
+### 🔹 Vue Générale
+![Vue générale de l'architecture](img/architecture_simple.png)
+
 ### 🔹 Prérequis
 ✅ **Garantir l’ordre de traitement** des calculs d’analyses techniques pour les actions.  
 ✅ **Répartition dynamique des partitions** via **Kafka**.
 
 ### 🔹 Gestion des Partitions (Kafka)
+![Kafka Partitioning](img/kafka_rep.png)
+
 - **Kafka déployé en cluster distribué** sur plusieurs nœuds pour assurer la **scalabilité et la tolérance aux pannes**.
 - **Kafka répartit automatiquement les partitions entre les consommateurs d’un groupe** :
   - 📌 Nouveau consommateur → partitions redistribuées.
@@ -46,6 +51,8 @@ Mettre en œuvre un **système distribué** capable d’analyser et de traiter e
   - 📌 Une partition = un seul consommateur par groupe → **ordre de traitement garanti**.
 
 ### 🔹 Organisation de l'Architecture
+![Détail du pipeline de traitement](img/architecture_det.png)
+
 📌 **Modules Clés** :
 - **Manager** (Producteur Kafka) → Génère des tâches sous forme d’actions contenant le symbole d'une action et une période à traiter. Ces tâches sont envoyées dans un topic Kafka nommé `Stock_topic`, réparties entre plusieurs partitions pour permettre un **traitement parallèle et scalable**.
   - 🔹 **Utilise PostgreSQL (table `symbol_state`)** pour mémoriser la dernière date traitée de chaque symbole afin d’éviter les doublons et faciliter la reprise en cas de panne.
